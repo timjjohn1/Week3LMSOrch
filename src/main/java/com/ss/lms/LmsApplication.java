@@ -373,10 +373,46 @@ public class LmsApplication
 	 *************************************************/
 
 	@DeleteMapping(value = "/admin/author/{authorId}")
-	public ResponseEntity<HttpStatus> deleteAuthor(@PathVariable Integer authorId)
+	public ResponseEntity<HttpStatus> adminDeleteAuthor(@PathVariable Integer authorId)
 	{
 		RequestEntity<HttpStatus> request = new RequestEntity<>(HttpMethod.DELETE,
 				URI.create(adminUri + "/author/" + authorId));
+
+		return rt.exchange(request, HttpStatus.class);
+	}
+	
+	@DeleteMapping(value = "/admin/publisher/{publisherId}")
+	public ResponseEntity<HttpStatus> adminDeletePublisher(@PathVariable Integer publisherId)
+	{
+		RequestEntity<HttpStatus> request = new RequestEntity<>(HttpMethod.DELETE,
+				URI.create(adminUri + "/publisher/" + publisherId));
+
+		return rt.exchange(request, HttpStatus.class);
+	}
+	
+	@DeleteMapping(value = "/admin/book/{bookId}")
+	public ResponseEntity<HttpStatus> adminDeleteBook(@PathVariable Integer bookId)
+	{
+		RequestEntity<HttpStatus> request = new RequestEntity<>(HttpMethod.DELETE,
+				URI.create(adminUri + "/book/" + bookId));
+
+		return rt.exchange(request, HttpStatus.class);
+	}
+	
+	@DeleteMapping(value = "/admin/branch/{branchId}")
+	public ResponseEntity<HttpStatus> adminDeleteLibraryBranch(@PathVariable Integer branchId)
+	{
+		RequestEntity<HttpStatus> request = new RequestEntity<>(HttpMethod.DELETE,
+				URI.create(adminUri + "/branch/" + branchId));
+
+		return rt.exchange(request, HttpStatus.class);
+	}
+	
+	@DeleteMapping(value = "/admin/borrower/{cardNo}")
+	public ResponseEntity<HttpStatus> adminDeleteBorrower(@PathVariable Integer cardNo)
+	{
+		RequestEntity<HttpStatus> request = new RequestEntity<>(HttpMethod.DELETE,
+				URI.create(adminUri + "/borrower/" + cardNo));
 
 		return rt.exchange(request, HttpStatus.class);
 	}
@@ -507,7 +543,7 @@ public class LmsApplication
 	 *************************************************/
 	
 	@DeleteMapping(value = "/librarian/bookcopy/book/{bookId}/branch/{branchId}")
-	public ResponseEntity<HttpStatus> librarianDeleteAuthor(@PathVariable Integer bookId, @PathVariable Integer branchId) {
+	public ResponseEntity<HttpStatus> librarianDeleteBookCopy(@PathVariable Integer bookId, @PathVariable Integer branchId) {
 		RequestEntity<HttpStatus> request = new RequestEntity<>(HttpMethod.DELETE,
 				URI.create(libUri + "/bookcopy/book/" + bookId + "/branch/" + branchId));
 		return rt.exchange(request, HttpStatus.class);
