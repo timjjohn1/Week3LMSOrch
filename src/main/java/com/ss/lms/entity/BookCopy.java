@@ -10,24 +10,20 @@ import javax.persistence.Table;
 @Entity
 @IdClass(BookCopyCompositeKey.class)
 @Table(name = "tbl_book_copies")
-public class BookCopy implements Serializable {
-    /**
-     * 
-     */
+public class BookCopy implements Serializable 
+{
     private static final long serialVersionUID = -7441409147455698231L;
-    //Book book;
+
     @Id
     private Integer bookId;
     @Id
     private Integer branchId;
-    @Column(name = "noOfCopies")
     private Integer noOfCopies;
     
-    public BookCopy() {
-        super();
-    }
-    public BookCopy(Integer bookId, Integer branchId, Integer noOfCopies) {
-        super();
+    public BookCopy() {}
+    
+    public BookCopy(Integer bookId, Integer branchId, Integer noOfCopies) 
+    {
         this.bookId = bookId;
         this.branchId = branchId;
         this.noOfCopies = noOfCopies;

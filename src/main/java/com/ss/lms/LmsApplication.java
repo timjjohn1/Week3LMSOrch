@@ -24,15 +24,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import com.ss.lms.entity.Author;
-import com.ss.lms.entity.Book;
-import com.ss.lms.entity.BookCopy;
-import com.ss.lms.entity.BookLoan;
-import com.ss.lms.entity.Borrower;
-import com.ss.lms.entity.LibraryBranch;
-import com.ss.lms.entity.Publisher;
+import com.ss.lms.entity.*;
 
 @RestController
 @SpringBootApplication
@@ -78,7 +74,14 @@ public class LmsApplication
 
 		HttpEntity<Author> request = new HttpEntity<Author>(author, headers);
 
-		return rt.exchange(adminUri + "/author", HttpMethod.POST, request, Author.class);
+		try 
+		{
+			return rt.exchange(adminUri + "/author", HttpMethod.POST, request, Author.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Author>(e.getStatusCode());
+		}
 	}
 
 	@PostMapping(path = "/admin/publisher", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, 
@@ -92,8 +95,14 @@ public class LmsApplication
 		headers.add("Accept", accept);
 
 		HttpEntity<Publisher> request = new HttpEntity<Publisher>(publisher, headers);
-
-		return rt.exchange(adminUri + "/publisher", HttpMethod.POST, request, Publisher.class);
+		try 
+		{
+			return rt.exchange(adminUri + "/publisher", HttpMethod.POST, request, Publisher.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Publisher>(e.getStatusCode());
+		}
 	}
 	
 	@PostMapping(path = "/admin/book", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, 
@@ -108,7 +117,15 @@ public class LmsApplication
 		
 		HttpEntity<Book> request = new HttpEntity<Book>(book, headers);
 		
-		return rt.exchange(adminUri + "/book", HttpMethod.POST, request, Book.class);
+		try 
+		{
+			return rt.exchange(adminUri + "/book", HttpMethod.POST, request, Book.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Book>(e.getStatusCode());
+		}
+		
 	}
 	
 	@PostMapping(path = "/admin/branch", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, 
@@ -123,7 +140,14 @@ public class LmsApplication
 		
 		HttpEntity<LibraryBranch> request = new HttpEntity<LibraryBranch>(branch, headers);
 		
-		return rt.exchange(adminUri + "/branch", HttpMethod.POST, request, LibraryBranch.class);
+		try 
+		{
+			return rt.exchange(adminUri + "/branch", HttpMethod.POST, request, LibraryBranch.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<LibraryBranch>(e.getStatusCode());
+		}
 	}
 	
 	@PostMapping(path = "/admin/borrower", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, 
@@ -138,7 +162,14 @@ public class LmsApplication
 		
 		HttpEntity<Borrower> request = new HttpEntity<Borrower>(borrower, headers);
 		
-		return rt.exchange(adminUri + "/borrower", HttpMethod.POST, request, Borrower.class);
+		try 
+		{
+			return rt.exchange(adminUri + "/borrower", HttpMethod.POST, request, Borrower.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Borrower>(e.getStatusCode());
+		}
 	}
 	
 	/*************************************************
@@ -152,9 +183,16 @@ public class LmsApplication
 	{
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
-
-		return rt.exchange(adminUri + "/author/" + authorId, HttpMethod.GET, new HttpEntity<Author>(headers),
-				Author.class);
+		
+		try 
+		{
+			return rt.exchange(adminUri + "/author/" + authorId, HttpMethod.GET, new HttpEntity<Author>(headers),
+					Author.class);
+		}
+		catch(HttpStatusCodeException e) 
+		{
+			return new ResponseEntity<Author>(e.getStatusCode());
+		}
 	}
 
 	@GetMapping(value = "/admin/author", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -173,8 +211,15 @@ public class LmsApplication
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
 
-		return rt.exchange(adminUri + "/publisher/" + publisherId, HttpMethod.GET, new HttpEntity<Publisher>(headers),
+		try 
+		{
+			return rt.exchange(adminUri + "/publisher/" + publisherId, HttpMethod.GET, new HttpEntity<Publisher>(headers),
 				Publisher.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Publisher>(e.getStatusCode());
+		}
 	}
 	
 	@GetMapping(value = "/admin/publisher", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -192,9 +237,17 @@ public class LmsApplication
 	{
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
-
-		return rt.exchange(adminUri + "/book/" + bookId, HttpMethod.GET, new HttpEntity<Book>(headers),
+		
+		try 
+		{
+			return rt.exchange(adminUri + "/book/" + bookId, HttpMethod.GET, new HttpEntity<Book>(headers),
 				Book.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Book>(e.getStatusCode());
+		}
+		
 	}
 	
 	@GetMapping(value = "/admin/book", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -212,9 +265,17 @@ public class LmsApplication
 	{
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
-
-		return rt.exchange(adminUri + "/branch/" + branchId, HttpMethod.GET, new HttpEntity<LibraryBranch>(headers),
+		
+		try 
+		{
+			return rt.exchange(adminUri + "/branch/" + branchId, HttpMethod.GET, new HttpEntity<LibraryBranch>(headers),
 				LibraryBranch.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<LibraryBranch>(e.getStatusCode());
+		}
+		
 	}
 	
 	@GetMapping(value = "/admin/branch", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -233,8 +294,16 @@ public class LmsApplication
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
 
-		return rt.exchange(adminUri + "/borrower/" + cardNo, HttpMethod.GET, new HttpEntity<Borrower>(headers),
+		try 
+		{
+			return rt.exchange(adminUri + "/borrower/" + cardNo, HttpMethod.GET, new HttpEntity<Borrower>(headers),
 				Borrower.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Borrower>(e.getStatusCode());
+		}
+		
 	}
 	
 	@GetMapping(value = "/admin/borrower", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -254,10 +323,17 @@ public class LmsApplication
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
 
-		return rt.exchange(adminUri + "/loan/borrower/" + cardNo + "/branch/" + branchId + "/book/" + bookId,
+		try 
+		{
+			return rt.exchange(adminUri + "/loan/borrower/" + cardNo + "/branch/" + branchId + "/book/" + bookId,
 				HttpMethod.GET,
 				new HttpEntity<BookLoan>(headers),
 				BookLoan.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<BookLoan>(e.getStatusCode());
+		}	
 	}
 	
 	@GetMapping(value = "/admin/loan", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -289,8 +365,16 @@ public class LmsApplication
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 
-		return rt.exchange((adminUri + "/author/" + authorId), HttpMethod.PUT, new HttpEntity<Author>(author, headers),
+		try 
+		{
+			return rt.exchange((adminUri + "/author/" + authorId), HttpMethod.PUT, new HttpEntity<Author>(author, headers),
 				Author.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Author>(e.getStatusCode());
+		}
+		
 	}
 	
 	@PutMapping(value = "/admin/publisher/{publisherId}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
@@ -303,8 +387,17 @@ public class LmsApplication
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 
-		return rt.exchange((adminUri + "/publisher/" + publisherId), HttpMethod.PUT, new HttpEntity<Publisher>(publisher, headers),
+		try 
+		{
+			return rt.exchange((adminUri + "/publisher/" + publisherId), HttpMethod.PUT, new HttpEntity<Publisher>(publisher, headers),
 				Publisher.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Publisher>(e.getStatusCode());
+		}
+		
+		
 	}
 	
 	@PutMapping(value = "/admin/book/{bookId}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
@@ -317,8 +410,16 @@ public class LmsApplication
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 
-		return rt.exchange((adminUri + "/book/" + bookId), HttpMethod.PUT, new HttpEntity<Book>(book, headers),
+		try 
+		{
+			return rt.exchange((adminUri + "/book/" + bookId), HttpMethod.PUT, new HttpEntity<Book>(book, headers),
 				Book.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Book>(e.getStatusCode());
+		}
+		
 	}
 	
 	@PutMapping(value = "/admin/branch/{branchId}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
@@ -331,8 +432,16 @@ public class LmsApplication
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 
-		return rt.exchange((adminUri + "/branch/" + branchId), HttpMethod.PUT, new HttpEntity<LibraryBranch>(branch, headers),
+		try 
+		{
+			return rt.exchange((adminUri + "/branch/" + branchId), HttpMethod.PUT, new HttpEntity<LibraryBranch>(branch, headers),
 				LibraryBranch.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<LibraryBranch>(e.getStatusCode());
+		}
+		
 	}
 	
 	@PutMapping(value = "/admin/borrower/{cardNo}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
@@ -345,8 +454,16 @@ public class LmsApplication
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 
-		return rt.exchange((adminUri + "/borrower/" + cardNo), HttpMethod.PUT, new HttpEntity<Borrower>(borrower, headers),
+		try 
+		{
+			return rt.exchange((adminUri + "/borrower/" + cardNo), HttpMethod.PUT, new HttpEntity<Borrower>(borrower, headers),
 				Borrower.class);
+		}
+		catch(HttpStatusCodeException e)
+		{
+			return new ResponseEntity<Borrower>(e.getStatusCode());
+		}
+		
 	}
 	
 	@PutMapping(value = "/admin/loan/borrower/{cardNo}/branch/{branchId}/book/{bookId}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
@@ -424,14 +541,19 @@ public class LmsApplication
 	 *************************************************/
 
 	@PostMapping(value = "/librarian/bookcopy/", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
-            									 consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<BookCopy> librarianCreateBookCopy(@RequestHeader("Accept") String accept,
-			@RequestHeader("Content-Type") String contentType, @RequestBody BookCopy bookCopy) {
+			 consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<BookCopy> createBookCopy(@RequestHeader("Accept") String accept,
+	@RequestHeader("Content-Type") String contentType, @RequestBody BookCopy bookCopy) {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
-
-		return rt.exchange(libUri + "/bookcopy/", HttpMethod.POST, new HttpEntity<BookCopy>(bookCopy, headers), BookCopy.class);
+		
+		try {
+			return rt.exchange(libUri + "/bookcopy/", HttpMethod.POST, new HttpEntity<BookCopy>(bookCopy, headers), BookCopy.class);
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<BookCopy>(e.getStatusCode());
+		}
 	}
 	
 	/*************************************************
@@ -440,64 +562,94 @@ public class LmsApplication
 	 * 
 	 *************************************************/
 	
-	@GetMapping(value = "/librarian/branch/{branchId}", produces =
-		{ MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<LibraryBranch> librarianReadLibraryBranchById(@RequestHeader("Accept") String accept, @PathVariable Integer branchId)
-	{
+	@GetMapping(value = "/librarian/branch/{branchId}", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<LibraryBranch> librarianReadLibraryBranchById(@RequestHeader("Accept") String accept, @PathVariable Integer branchId) {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
 
-		return rt.exchange(libUri + "/branch/" + branchId, HttpMethod.GET, new HttpEntity<LibraryBranch>(headers),
-				LibraryBranch.class);
+		try {
+			return rt.exchange(libUri + "/branch/" + branchId, HttpMethod.GET, new HttpEntity<LibraryBranch>(headers),
+					LibraryBranch.class);
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<LibraryBranch>(e.getStatusCode());
+		}
+		
 	}
 
-	@GetMapping(value = "/librarian/branch/", produces = { MediaType.APPLICATION_JSON_VALUE,
+	@GetMapping(value = "/librarian/branches/", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<Iterable<LibraryBranch>> librarianReadAllLibraryBranches(@RequestHeader("Accept") String accept) {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
-
-		return rt.exchange(libUri + "/branch/", HttpMethod.GET, new HttpEntity<LibraryBranch>(headers),
+		try {
+		return rt.exchange(libUri + "/branches/", HttpMethod.GET, new HttpEntity<LibraryBranch>(headers),
 				new ParameterizedTypeReference<Iterable<LibraryBranch>>() {});
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<Iterable<LibraryBranch>>(e.getStatusCode());
+		}
 
 	}
 
-	@GetMapping(value = "/librarian/book/", produces = { MediaType.APPLICATION_JSON_VALUE,
+	@GetMapping(value = "/librarian/books/", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<Iterable<Book>> librarianReadAllBooks(@RequestHeader("Accept") String accept) {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
+		try {
+			return rt.exchange(libUri + "/books/", HttpMethod.GET, 
+					new HttpEntity<Book>(headers), 
+					new ParameterizedTypeReference<Iterable<Book>>() {});
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<Iterable<Book>>(e.getStatusCode());
+		}
+	}
 
-		return rt.exchange(libUri + "/book/", HttpMethod.GET, 
-				new HttpEntity<Book>(headers), 
-				new ParameterizedTypeReference<Iterable<Book>>() {});
+	@GetMapping(value = "/librarian/book/{bookId}", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<Book> librarianReadBookById(@RequestHeader("Accept") String accept,
+			@PathVariable Integer bookId) {
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add("Accept", accept);
+		System.out.println("Checking.............................");
+		ResponseEntity<Book> re = null;
+		try {
+			re = rt.exchange(libUri + "/book/" + bookId, HttpMethod.GET, new HttpEntity<Book>(headers), Book.class);
+
+		}catch(HttpClientErrorException e) {
+			System.out.println(e.getStatusCode() + "|||||||||||||||||||||||||||||");
+			return new ResponseEntity<Book>(e.getStatusCode());
+			
+		}
+		
+		return re;
 
 	}
-	
-	@GetMapping(value = "/librarian/book/{bookId}", produces =
-		{ MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<Book> librarianReadBookById(@RequestHeader("Accept") String accept, @PathVariable Integer bookId)
+
+	@GetMapping(value = "/librarian/bookcopy/book/{bookId}/branch/{branchId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<BookCopy> librarianReadBookCopyById(@RequestHeader("Accept") String accept,
+														@PathVariable("branchId") Integer branchId, 
+														@PathVariable("bookId") Integer bookId)
 	{
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
-
-		return rt.exchange(libUri + "/book/" + bookId, HttpMethod.GET, new HttpEntity<Book>(headers), Book.class);
+		System.out.println("hhhhhhhh");
+		System.out.println(new HttpEntity<BookCopy>(headers));
+		System.out.println("jjjjjjjjjjj");
+		
+		try {
+			return rt.exchange(libUri + "/bookcopy/book/" + bookId + "/branch/" + branchId,
+					HttpMethod.GET,
+					new HttpEntity<BookCopy>(headers),
+					BookCopy.class);
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<BookCopy>(e.getStatusCode());
+		}
 	}
-
-    @GetMapping(value = "/librarian/bookcopy/book/{bookId}/branch/{branchId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-    public ResponseEntity<BookCopy> librarianReadBookCopyById(@RequestHeader("Accept") String accept,
-                                                        @PathVariable("branchId") Integer branchId, 
-                                                        @PathVariable("bookId") Integer bookId)
-    {
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add("Accept", accept);
-        
-        return rt.exchange(libUri + "/bookcopy/book/" + bookId + "/branch/" + branchId,
-                HttpMethod.GET,
-                new HttpEntity<BookCopy>(headers),
-                BookCopy.class);
-    }
-
 	/*************************************************
 	 * 
 	 * ALL LIBRARIAN UPDATE OPERATIONS
@@ -506,23 +658,27 @@ public class LmsApplication
 	
 	@PutMapping(value = "/librarian/branch/{branchId}", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<LibraryBranch> updateLibraryBranch(@RequestHeader("Accept") String accept,
+	public ResponseEntity<LibraryBranch> librarianUpdateLibraryBranch(@RequestHeader("Accept") String accept,
 															@RequestHeader("Content-Type") String contentType, 
 															@PathVariable Integer branchId,
 															@RequestBody LibraryBranch libraryBranch) {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
-
-		return rt.exchange(libUri + "/branch/" + branchId, HttpMethod.PUT,
+		try {
+			return rt.exchange(libUri + "/branch/" + branchId, HttpMethod.PUT,
 				new HttpEntity<LibraryBranch>(libraryBranch, headers), LibraryBranch.class);
-
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<LibraryBranch>(e.getStatusCode());
+		}
 	}
 
-	@PutMapping(value = "/librarian/bookcopy/book/{bookId}/branch/{branchId}", consumes = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
-					MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<BookCopy> updateBookCopy(@RequestHeader("Accept") String accept,
+	@PutMapping(value = "/librarian/bookcopy/book/{bookId}/branch/{branchId}", 
+			consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, 
+			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	
+	public ResponseEntity<BookCopy> librarianUpdateBookCopy(@RequestHeader("Accept") String accept,
 													@RequestHeader("Content-Type") String contentType, 
 													@PathVariable Integer bookId,
 													@PathVariable Integer branchId, 
@@ -531,9 +687,13 @@ public class LmsApplication
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 		System.out.println("Helloskdljflsjdf");
+		try {
 		return rt.exchange(libUri + "/bookcopy/book/" + bookId + "/branch/" + branchId, HttpMethod.PUT,
 				new HttpEntity<BookCopy>(bookCopy, headers), BookCopy.class);
-
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<BookCopy>(e.getStatusCode());
+		}
 	}
 	
 	/*************************************************
@@ -543,10 +703,68 @@ public class LmsApplication
 	 *************************************************/
 	
 	@DeleteMapping(value = "/librarian/bookcopy/book/{bookId}/branch/{branchId}")
-	public ResponseEntity<HttpStatus> librarianDeleteBookCopy(@PathVariable Integer bookId, @PathVariable Integer branchId) {
+	public ResponseEntity<HttpStatus> deleteAuthor(@PathVariable Integer bookId, @PathVariable Integer branchId) {
 		RequestEntity<HttpStatus> request = new RequestEntity<>(HttpMethod.DELETE,
 				URI.create(libUri + "/bookcopy/book/" + bookId + "/branch/" + branchId));
-		return rt.exchange(request, HttpStatus.class);
+		try {
+			return rt.exchange(request, HttpStatus.class);
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<HttpStatus>(e.getStatusCode());
+		}
 	}
 
+	/*************************************************
+	 * 
+	 * ALL BORROWER READ OPERATIONS
+	 * 
+	 *************************************************/
+	
+	@GetMapping(value = "/borrower/bookcopy/{branchId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<Iterable<BookCopy>> readAllBookCopies(@RequestHeader("Accept") String accept, @PathVariable Integer branchId)
+	{
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add("Accept", accept);
+
+		return rt.exchange(borrowerUri + "/bookcopy/" + branchId, HttpMethod.GET, new HttpEntity<BookCopy>(headers),
+				new ParameterizedTypeReference<Iterable<BookCopy>>() { });
+	}
+
+	@GetMapping(value = "/borrower/branch", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<Iterable<LibraryBranch>> readLibraryBranches(@RequestHeader("Accept") String accept)
+	{
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add("Accept", accept);
+		
+		return rt.exchange(borrowerUri + "/branch", HttpMethod.GET, new HttpEntity<LibraryBranch>(headers),
+				new ParameterizedTypeReference<Iterable<LibraryBranch>>(){});
+
+	}
+	
+	@GetMapping(value = "/borrower/bookloan/{cardNo}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<Iterable<BookLoan>> readAllBookLoan(@RequestHeader("Accept") String accept, @PathVariable Integer cardNo)
+	{
+
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add("Accept", accept);
+
+		return rt.exchange(borrowerUri + "/bookloan/" + cardNo, HttpMethod.GET, new HttpEntity<BookLoan>(headers),
+				new ParameterizedTypeReference<Iterable<BookLoan>>() { });
+	}
+	
+	/************************************************
+	 * 												*
+	 * 			ALL BORROWER DELETE OPERATIONS		*
+	 * 												*	
+	 ************************************************/
+	
+	@DeleteMapping(value = "/borrower/bookloan/{cardNo}/branch/{branchId}/book/{bookId}")
+	public ResponseEntity<HttpStatus> deleteBookLoan(@PathVariable Integer cardNo, @PathVariable Integer branchId,
+					@PathVariable Integer bookId){
+						
+		RequestEntity<HttpStatus> request = new RequestEntity<>(HttpMethod.DELETE,
+				URI.create(borrowerUri + "/bookloan/" + cardNo + "/branch/" + branchId + "/book/" + bookId));
+
+		return rt.exchange(request, HttpStatus.class);
+	}
 }
