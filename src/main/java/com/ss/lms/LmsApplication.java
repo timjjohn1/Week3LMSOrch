@@ -725,9 +725,15 @@ public class LmsApplication
 	{
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
-
-		return rt.exchange(borrowerUri + "/bookcopy/" + branchId, HttpMethod.GET, new HttpEntity<BookCopy>(headers),
+		
+		try 
+		{
+			return rt.exchange(borrowerUri + "/bookcopy/" + branchId, HttpMethod.GET, new HttpEntity<BookCopy>(headers),
 				new ParameterizedTypeReference<Iterable<BookCopy>>() { });
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<Iterable<BookCopy>>(e.getStatusCode());
+		}
 	}
 
 	@GetMapping(value = "/borrower/branch", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -735,10 +741,14 @@ public class LmsApplication
 	{
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
-		
-		return rt.exchange(borrowerUri + "/branch", HttpMethod.GET, new HttpEntity<LibraryBranch>(headers),
+		try 
+		{
+			return rt.exchange(borrowerUri + "/branch", HttpMethod.GET, new HttpEntity<LibraryBranch>(headers),
 				new ParameterizedTypeReference<Iterable<LibraryBranch>>(){});
-
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<Iterable<LibraryBranch>>(e.getStatusCode());
+		}
 	}
 	
 	@GetMapping(value = "/borrower/bookloan/{cardNo}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -748,8 +758,14 @@ public class LmsApplication
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
 
-		return rt.exchange(borrowerUri + "/bookloan/" + cardNo, HttpMethod.GET, new HttpEntity<BookLoan>(headers),
+		try 
+		{
+			return rt.exchange(borrowerUri + "/bookloan/" + cardNo, HttpMethod.GET, new HttpEntity<BookLoan>(headers),
 				new ParameterizedTypeReference<Iterable<BookLoan>>() { });
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<Iterable<BookLoan>>(e.getStatusCode());
+		}
 	}
 	
 	/************************************************
@@ -765,6 +781,12 @@ public class LmsApplication
 		RequestEntity<HttpStatus> request = new RequestEntity<>(HttpMethod.DELETE,
 				URI.create(borrowerUri + "/bookloan/" + cardNo + "/branch/" + branchId + "/book/" + bookId));
 
-		return rt.exchange(request, HttpStatus.class);
+		try 
+		{
+			return rt.exchange(request, HttpStatus.class);
+		}
+		catch(HttpClientErrorException e) {
+			return new ResponseEntity<HttpStatus>(e.getStatusCode());
+		}
 	}
 }
